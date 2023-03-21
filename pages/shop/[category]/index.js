@@ -122,54 +122,48 @@ const CategoryPage = ({category, products}) => {
 export default CategoryPage;
 
 const ProductItem = ({ product }) => {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <CustomLink
       href={`/shop/${useRouter().query.category}/${product.slug}`}
       className="grid gap-1"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* <div className="relative">
+      <div className="relative">
+        {isHovered && (
+          <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10" />
+        )}
         {product.salePercentage > 0 && (
-          <div className="absolute bg-red-500 py-1 px-2 text-white text-sm">
+          <div className="absolute bg-red-500 py-1 px-2 text-white text-sm z-20">
             -{product.salePercentage}%
           </div>
         )}
         <img src={product.images?.[0]?.url} alt={product.name} />
-      </div> */}
-      {/* <h3 className="text-lg sm:text-xl font-semibold uppercase">
+      </div>
+      <h3 className="text-lg sm:text-xl font-semibold uppercase">
         {product.name}
       </h3>
       {product.reviews?.length > 0 && (
         <div className="flex flex-col sm:flex-row  gap-1">
           <div className="flex flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2, 3, 4, 5].map((star) => (
               <FaStar
-                key={i}
-                className={i > i ? "text-gray-400" : "text-black"}
+                key={star}
+                className={`${
+                  star <= product.ratingsAverage ? "text-yellow-500" : ""
+                }`}
               />
             ))}
+            <p>({product.reviews.length} reviews)</p>
           </div>
-          <div>| 10 Reviews</div>
+          <p className="text-gray-500 text-sm">
+            {product.ratingsAverage.toFixed(1)} average rating
+          </p>
         </div>
       )}
-      <p className="">${product.sizes[0].price}</p> */}
-       <div className="product-item mt-2 py-2">
-        <img
-          src={product.images?.[0]?.url}
-          alt={product.name}
-          className="rounded-xl"
-          //width={350}
-          //height={350}
-		  style={{ height: 300, width: "100%", hover: {        
-          transform: scale(1.2)        
-      }}}
-        />
-        <h3 className="text-lg sm:text-xl font-semibold mt-2 font-montserrat text-white text-center">
-        {product.name[0].toUpperCase()}{product.name.slice(1).toLowerCase()}
-		
-        </h3>
-        <p className="text-white font-montserrat mb-2 text-center mt-1">₹{product.sizes[0].price}</p>
-      </div>
+      <p className="text-gray-500">${product.sizes[0].price.toFixed(2)}</p>
     </CustomLink>
   );
 };
