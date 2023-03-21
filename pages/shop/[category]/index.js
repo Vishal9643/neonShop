@@ -153,20 +153,16 @@ const ProductItem = ({ product }) => {
         </div>
       )}
       <p className="">${product.sizes[0].price}</p> */}
-       <div className="product-item mt-2 py-2">
+       <div className="product-item mt-2 py-2" style={{'&:hover img': {
+        transform: 'scale(1.2)'
+       }}}>
         <img
           src={product.images?.[0]?.url}
           alt={product.name}
           className="rounded-xl"
           //width={350}
           //height={350}
-          style={{ 
-            height: 300, 
-            width: "100%", 
-            '&:hover img': { 
-              transform: 'scale(1.2)' 
-            }
-          }}
+		  style={{ height: 300, width: "100%"}}
         />
         <h3 className="text-lg sm:text-xl font-semibold mt-2 font-montserrat text-white text-center">
         {product.name[0].toUpperCase()}{product.name.slice(1).toLowerCase()}
