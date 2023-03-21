@@ -1,35 +1,40 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import React, { Component } from 'react';
-import { FaCaretLeft, FaCaretRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Carousel } from 'react-responsive-carousel';
+import { Carousel } from "react-responsive-carousel";
+import styled from "styled-components";
 
-  // export default class NextJsCarousel extends Component {
-  //   render() {
-  //     return (
-  //       <div>
-  //       <Carousel> 
-      
-  //       ImageSlider();
-  
-  //       </Carousel>
-  //       </div>
-  //     );
-  //   }
-  // };
+const Container = styled.div`
+  align-items: center;
+  height: 400px;
+  max-width: 800px;
+  max-height: 600px;
+  margin: 0 auto;
+`;
 
-  const ImageSlider = ({ images }) => {
-    const [review, setreview] = useState(0);
-  
-    return (
-      <div className="relative" style= {{height: `${600}px`,width: `${100}%` } }>
-        <Controls
-          review={review}
-          setreview={setreview}
-          images={images}
-        />
+const ImageSlider = ({ images }) => {
+  const [review, setReview] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setReview((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [images]);
+
+  const nextImage = () => {
+    setReview((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setReview((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  return (
+    <Container>
+      <div className="relative" style={{ height: "100%", width: "100%" }}>
+        <Controls nextImage={nextImage} prevImage={prevImage} />
         <div className="relative overflow-hidden">
           <motion.div
             className="flex"
@@ -45,38 +50,43 @@ import { Carousel } from 'react-responsive-carousel';
                 key={i}
                 style={{
                   width: `${(1 / images.length) * 100}%`,
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <img src={image.url} alt={image.alt} className="w-full"/>
+                <img
+                  src={image.url}
+                  alt={image.alt}
+                  className="max-h-full max-w-full object-contain"
+                />
               </div>
             ))}
           </motion.div>
         </div>
       </div>
-    );
-  };
-  
-  export default ImageSlider;
+    </Container>
+  );
+};
 
-  
-  
-  const Controls = ({ setreview, review, images }) => {
-    return (
-      <div className="absolute z-10 top-1/2 -translate-y-1/2  inset-x-0 transform  flex justify-between text-3xl text-white">
-        <button
-          className="transform focus:outline-none  transition py-5 disabled:text-gray-500 "
-          disabled={review === 0}
-          onClick={() => setreview(review - 1)}
-        >
-          <BsChevronLeft />
-        </button>
-        <button
-          className="transform focus:outline-none  transition py-5 disabled:text-gray-500 "
-          disabled={review >= images.length - 1}
-          onClick={() => setreview(review + 1)}
-        >
-          <BsChevronRight />
-        </button>
-      </div>
-    );
-  };
+const Controls = ({ nextImage, prevImage }) => {
+  return (
+    <div className="absolute z-10 top-1/2 -translate-y-1/2  inset-x-0 transform  flex justify-between text-3xl text-white">
+      <button
+        className="transform focus:outline-none  transition py-5"
+        onClick={prevImage}
+      >
+        <BsChevronLeft />
+      </button>
+      <button
+        className="transform focus:outline-none  transition py-5"
+        onClick={nextImage}
+      >
+        <BsChevronRight />
+      </button>
+    </div>
+  );
+};
+
+export default ImageSlider;
