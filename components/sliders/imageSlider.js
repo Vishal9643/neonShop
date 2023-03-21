@@ -36,14 +36,27 @@ const ImageSlider = ({ images }) => {
       <div className="relative" style={{ height: "100%", width: "100%" }}>
         <Controls nextImage={nextImage} prevImage={prevImage} />
         <div className="relative overflow-hidden">
-          <motion.div
-            className="flex"
-            style={{ width: `${images.length * 100}%` }}
-            initial={{ x: 0 }}
-            animate={{
-              x: `-${(review / images.length) * 100}%`,
-              transition: { duration: 0.5 },
-            }}
+          <Carousel
+            selectedItem={review}
+            showArrows={false}
+            showStatus={false}
+            showIndicators={false}
+            swipeable={false}
+            emulateTouch={false}
+            dynamicHeight={false}
+            useKeyboardArrows={true}
+            centerMode={false}
+            centerSlidePercentage={100}
+            infiniteLoop={false}
+            // images={images}
+            // renderThumbs={() => (
+            //   <CarouselThumb
+            //     images={images}
+            //     review={review}
+            //     setReview={setReview}
+            //   />
+            // )}
+           
           >
             {images.map((image, i) => (
               <div
@@ -63,7 +76,8 @@ const ImageSlider = ({ images }) => {
                 />
               </div>
             ))}
-          </motion.div>
+            
+          </Carousel>
         </div>
       </div>
     </Container>
@@ -89,4 +103,41 @@ const Controls = ({ nextImage, prevImage }) => {
   );
 };
 
-export default ImageSlider;
+// const CarouselThumb = ({ images, review, setReview }) => {
+//   const handleClick = (index) => {
+//     setReview(index);
+//   };
+
+//   const children = Array.isArray(images) ? images : [images];
+
+//   return (
+//     <div className="flex justify-center items-center">
+//       {children.map((image, i) => (
+//         <div
+//           key={i}
+//           onClick={() => handleClick(i)}
+//           className={`
+//             cursor-pointer
+//             mx-1
+//             ${
+//               review === i
+//                 ? "border-gray-400 border-opacity-100"
+//                 : "border-gray-400 border-opacity-50"
+//             }
+//           `}
+//           style={{
+//             height: 50,
+//             width: `${100 / children.length}%`,
+//             backgroundImage: `url(${image.url})`,
+//             backgroundPosition: "center",
+//             backgroundSize: "cover",
+//           }}
+//         />
+//       ))}
+//     </div>
+//   );
+// };
+
+
+          
+          export default ImageSlider;

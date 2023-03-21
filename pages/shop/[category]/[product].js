@@ -192,7 +192,7 @@ const ProductPage = ({ product }) => {
               -{product.salePercentage}%
             </div>
           )}
-          {product.images?.length > 1 ? (
+          {/* {product.images?.length > 1 ? (
             <ImageSlider1
               images={product.images.map((image) => ({
                 url: image.url,
@@ -205,7 +205,7 @@ const ProductPage = ({ product }) => {
               alt={product.name}
               className="w-full object-cover rounded-2xl "
             />
-          )}
+          )} */}
         </div>
         </p>
         
