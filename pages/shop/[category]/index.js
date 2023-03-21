@@ -127,6 +127,9 @@ const ProductItem = ({ product }) => {
     <CustomLink
       href={`/shop/${useRouter().query.category}/${product.slug}`}
       className="grid gap-1"
+      style={{'&:hover img': {
+        transform: 'scale(1.2)'
+       }}}
     >
       {/* <div className="relative">
         {product.salePercentage > 0 && (
@@ -153,9 +156,7 @@ const ProductItem = ({ product }) => {
         </div>
       )}
       <p className="">${product.sizes[0].price}</p> */}
-       <div className="product-item mt-2 py-2" style={{'&:hover img': {
-        transform: 'scale(1.2)'
-       }}}>
+       <div className="product-item mt-2 py-2" >
         <img
           src={product.images?.[0]?.url}
           alt={product.name}
