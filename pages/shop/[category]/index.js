@@ -160,7 +160,9 @@ const ProductItem = ({ product }) => {
           className="rounded-xl"
           //width={350}
           //height={350}
-		  style={{ height: 300, width: "100%"}}
+		  style={{ height: 300, width: "100%", hover: {        
+          transform: scale(1.2)        
+      }}}
         />
         <h3 className="text-lg sm:text-xl font-semibold mt-2 font-montserrat text-white text-center">
         {product.name[0].toUpperCase()}{product.name.slice(1).toLowerCase()}
