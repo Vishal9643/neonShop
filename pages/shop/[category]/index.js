@@ -15,6 +15,25 @@ import LoadingBtn, { Loader } from "../../../components/LoadingBtn";
 import Axios from "../../../utils/Axios";
 import { useRouter } from "next/router";
 import Head from 'next/head';
+import styled from "styled-components";
+
+
+
+
+//Hover Effect
+
+const HoverEffect = styled.div`
+  &:hover img {
+    transform: scale(1.1);
+    transition: transform 0.5s ease-in-out;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  margin-top: 20px;
+  
+
+`;
+
+
 
 // variables 
 const LTH = 'LTH'; 
@@ -127,9 +146,6 @@ const ProductItem = ({ product }) => {
     <CustomLink
       href={`/shop/${useRouter().query.category}/${product.slug}`}
       className="grid gap-1"
-      style={{'&:hover img': {
-        transform: 'scale(1.2)'
-       }}}
     >
       {/* <div className="relative">
         {product.salePercentage > 0 && (
@@ -156,7 +172,10 @@ const ProductItem = ({ product }) => {
         </div>
       )}
       <p className="">${product.sizes[0].price}</p> */}
-       <div className="product-item mt-2 py-2" >
+      <HoverEffect>
+
+     
+       <div className="product-item mt-2 py-2">
         <img
           src={product.images?.[0]?.url}
           alt={product.name}
@@ -171,6 +190,7 @@ const ProductItem = ({ product }) => {
         </h3>
         <p className="text-white font-montserrat mb-2 text-center mt-1">₹{product.sizes[0].price}</p>
       </div>
+      </HoverEffect>
     </CustomLink>
   );
 };

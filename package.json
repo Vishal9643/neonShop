@@ -30,6 +30,7 @@
     "react-responsive-carousel": "^3.2.23",
     "streamifier": "^0.1.1",
     "stripe": "^8.195.0",
+    "styled-components": "^5.3.9",
     "uniqid": "^5.4.0"
   },
   "devDependencies": {

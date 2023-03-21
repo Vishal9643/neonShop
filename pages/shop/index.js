@@ -12,6 +12,22 @@ import LoadingBtn from "../../components/LoadingBtn";
 import connectDb from "../../server/utils/connectDb";
 import ProductNavigation from "../../components/ProductNavigation";
 import Head from "next/head";
+import styled from "styled-components";
+
+
+//Hover Effect
+
+const HoverEffect = styled.div`
+  &:hover img {
+    transform: scale(1.1);
+    transition: transform 0.5s ease-in-out;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  margin-top: 20px;
+  
+
+`;
+
 
 // variables
 const LTH = "LTH";
@@ -239,6 +255,7 @@ const ProductItem = ({ product }) => {
         href={`/shop/${product.category.slug}/${product.slug}`}
         className="grid gap-1 "
       >
+        <HoverEffect>
         <div className="product-item mt-2 py-2">
           <img
             src={product.images?.[0]?.url}
@@ -247,7 +264,7 @@ const ProductItem = ({ product }) => {
             // width={350}
             // height={350}
             style={{ height: 300, width: "100%"}}
-          />
+            />
           <h3 className="text-lg sm:text-xl font-semibold mt-2 font-montserrat text-white text-center">
             {product.name[0].toUpperCase()}{product.name.slice(1).toLowerCase()}
           </h3>
@@ -255,6 +272,7 @@ const ProductItem = ({ product }) => {
             ₹{product.sizes[0].price}
           </p>
         </div>
+        </HoverEffect>
       </CustomLink>
     </>
   );
