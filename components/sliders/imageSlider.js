@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const Container = styled.div`
   position: relative;
@@ -66,12 +67,64 @@ const Thumbnail = styled.div`
   margin-top: 20px;
 `;
 
+
+const IconContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: 80px;
+  padding-left: 80px;
+  padding-bottom: 140px;
+  // margin: 0 auto;
+  align-items: center;
+`;
+
+const Icon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  svg {
+    font-size: 24px;
+    color: #333;
+  }
+`;
+
+const transition = {
+  duration: 1,
+};
+
 const ImageSlider = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleThumbnailClick = (index) => {
     setActiveIndex(index);
   };
+
+  const handlePrevClick = () => {
+    setActiveIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextClick = () => {
+    setActiveIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+      };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -88,23 +141,35 @@ const ImageSlider = ({ images }) => {
             key={index}
             initial={{ opacity: 0 }}
             animate={{ opacity: activeIndex === index ? 1 : 0 }}
+            transition={transition}
           >
             <img src={image.url} alt={image.alt} />
           </Slide>
         ))}
       </SlideContainer>
+      <IconContainer>
+      <Icon onClick={handlePrevClick}>
+      <FaChevronLeft />
+      </Icon>
+      <Icon onClick={handleNextClick}>
+      <FaChevronRight />
+      </Icon>
+      
+      </IconContainer>
+      
       <ThumbnailContainer>
+        
         {images.map((image, index) => (
           <Thumbnail
             key={index}
             style={{ backgroundImage: `url(${image.url})` }}
             active={activeIndex === index}
-            onClick={() => handleThumbnailClick(index)}
-          />
-        ))}
-      </ThumbnailContainer>
-    </Container>
-  );
+onClick={() => handleThumbnailClick(index)}
+/>
+))}
+</ThumbnailContainer>
+</Container>
+);
 };
 
 export default ImageSlider;
