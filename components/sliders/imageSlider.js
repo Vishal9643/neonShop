@@ -1,143 +1,127 @@
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { Carousel } from "react-responsive-carousel";
 import styled from "styled-components";
 
 const Container = styled.div`
-  align-items: center;
+  position: relative;
+  z-index: 1;
+  width: 900px; /* set width to desired dimension */
+  height: 600px; /* set height to desired dimension */
+`;
+
+const SlideContainer = styled.div`
+  display: flex;
+  flex-direction: row;
   height: 400px;
-  max-width: 800px;
-  max-height: 600px;
-  margin: 0 auto;
+  width: 600px;
+  justify-content: center;
+  align-items: center;
+`;
+
+// const Slide = styled(motion.div)`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
+const Slide = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+  
+
+  img {
+    width: 500px;
+    height: 400px;
+    object-fit: cover;
+  }
+`;
+
+
+
+
+const ThumbnailContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Thumbnail = styled.div`
+  width: 50px;
+  height: 50px;
+  margin: 0 5px;
+  background-color: #ccc;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid ${({ active }) => (active ? "#333" : "#ccc")};
+  cursor: pointer;
 `;
 
 const ImageSlider = ({ images }) => {
-  const [review, setReview] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleThumbnailClick = (index) => {
+    setActiveIndex(index);
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setReview((prev) => (prev + 1) % images.length);
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000);
-    return () => clearInterval(timer);
+    return () => clearInterval(interval);
   }, [images]);
-
-  const nextImage = () => {
-    setReview((prev) => (prev + 1) % images.length);
-  };
-
-  const prevImage = () => {
-    setReview((prev) => (prev - 1 + images.length) % images.length);
-  };
 
   return (
     <Container>
-      <div className="relative" style={{ height: "100%", width: "100%" }}>
-        <Controls nextImage={nextImage} prevImage={prevImage} />
-        <div className="relative overflow-hidden">
-          <Carousel
-            selectedItem={review}
-            showArrows={false}
-            showStatus={false}
-            showIndicators={false}
-            swipeable={false}
-            emulateTouch={false}
-            dynamicHeight={false}
-            useKeyboardArrows={true}
-            centerMode={false}
-            centerSlidePercentage={100}
-            infiniteLoop={false}
-            // images={images}
-            // renderThumbs={() => (
-            //   <CarouselThumb
-            //     images={images}
-            //     review={review}
-            //     setReview={setReview}
-            //   />
-            // )}
+      <SlideContainer>
+        {images.map((image, index) => (
+          <Slide
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: activeIndex === index ? 1 : 0 }}
            
           >
-            {images.map((image, i) => (
-              <div
-                key={i}
-                style={{
-                  width: `${(1 / images.length) * 100}%`,
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  src={image.url}
-                  alt={image.alt}
-                  className="max-h-full max-w-full object-contain"
-                />
-              </div>
-            ))}
             
-          </Carousel>
-        </div>
-      </div>
+
+            <img src={image.url} alt={image.alt}  />
+            
+          </Slide>
+        ))}
+      </SlideContainer>
+      
+      <hr style={{ margin: "auto", marginTop: "130px", border: "0.5px solid white", boxShadow: "0px 4px 10px rgba(0, 0, 0, 1)", width: "300px", alignItems: "center", display: "flex", justifyContent: "center" }} />
+
+      <ThumbnailContainer>
+      
+        {images.map((image, index) => (
+          <Thumbnail
+            key={index}
+            style={{ backgroundImage: `url(${image.url})` }}
+            active={activeIndex === index}
+            onClick={() => handleThumbnailClick(index)}
+          />
+        ))}
+      </ThumbnailContainer>
     </Container>
   );
 };
 
-const Controls = ({ nextImage, prevImage }) => {
-  return (
-    <div className="absolute z-10 top-1/2 -translate-y-1/2  inset-x-0 transform  flex justify-between text-3xl text-white">
-      <button
-        className="transform focus:outline-none  transition py-5"
-        onClick={prevImage}
-      >
-        <BsChevronLeft />
-      </button>
-      <button
-        className="transform focus:outline-none  transition py-5"
-        onClick={nextImage}
-      >
-        <BsChevronRight />
-      </button>
-    </div>
-  );
-};
-
-// const CarouselThumb = ({ images, review, setReview }) => {
-//   const handleClick = (index) => {
-//     setReview(index);
-//   };
-
-//   const children = Array.isArray(images) ? images : [images];
-
-//   return (
-//     <div className="flex justify-center items-center">
-//       {children.map((image, i) => (
-//         <div
-//           key={i}
-//           onClick={() => handleClick(i)}
-//           className={`
-//             cursor-pointer
-//             mx-1
-//             ${
-//               review === i
-//                 ? "border-gray-400 border-opacity-100"
-//                 : "border-gray-400 border-opacity-50"
-//             }
-//           `}
-//           style={{
-//             height: 50,
-//             width: `${100 / children.length}%`,
-//             backgroundImage: `url(${image.url})`,
-//             backgroundPosition: "center",
-//             backgroundSize: "cover",
-//           }}
-//         />
-//       ))}
-//     </div>
-//   );
-// };
-
-
-          
-          export default ImageSlider;
+export default ImageSlider;
