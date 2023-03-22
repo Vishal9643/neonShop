@@ -6,28 +6,18 @@ const Container = styled.div`
   position: relative;
   z-index: 1;
   width: 900px; /* set width to desired dimension */
-  height: 600px; /* set height to desired dimension */
+  height: 750px; /* set height to desired dimension */
 `;
 
 const SlideContainer = styled.div`
   display: flex;
   flex-direction: row;
-  height: 400px;
-  width: 600px;
+  height: 600px;
+  width: 800px; /* Width of a single slide */
   justify-content: center;
   align-items: center;
+  // margin: 0 auto; /* To center the slides */
 `;
-
-// const Slide = styled(motion.div)`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
 
 const Slide = styled(motion.div)`
   position: absolute;
@@ -35,44 +25,45 @@ const Slide = styled(motion.div)`
   left: 0;
   right: 0;
   bottom: 0;
-  flex: 1;
   height: 100%;
   display: flex;
+  flex: 1;
   justify-content: center;
-  align-items: center;
+  align-items: top;
   object-fit: cover;
-  
+  // padding: 50px;
+  // margin: 40px;
 
   img {
-    width: 500px;
-    height: 400px;
+    width: 800px;
+    height: 600px;
     object-fit: cover;
+    border-radius: 30px;
   }
 `;
 
-
-
-
 const ThumbnailContainer = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   left: 0;
   width: 100%;
-  height: 50px;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const Thumbnail = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 120px;
+  height: 120px;
   margin: 0 5px;
   background-color: #ccc;
   background-size: cover;
   background-position: center;
-  border: 2px solid ${({ active }) => (active ? "#333" : "#ccc")};
+  border: 2px solid ${({ active }) => (active ? "#ccc" : "#333")};
   cursor: pointer;
+  padding: 10px;
+  margin-top: 20px;
 `;
 
 const ImageSlider = ({ images }) => {
@@ -97,20 +88,12 @@ const ImageSlider = ({ images }) => {
             key={index}
             initial={{ opacity: 0 }}
             animate={{ opacity: activeIndex === index ? 1 : 0 }}
-           
           >
-            
-
-            <img src={image.url} alt={image.alt}  />
-            
+            <img src={image.url} alt={image.alt} />
           </Slide>
         ))}
       </SlideContainer>
-      
-      <hr style={{ margin: "auto", marginTop: "130px", border: "0.5px solid white", boxShadow: "0px 4px 10px rgba(0, 0, 0, 1)", width: "300px", alignItems: "center", display: "flex", justifyContent: "center" }} />
-
       <ThumbnailContainer>
-      
         {images.map((image, index) => (
           <Thumbnail
             key={index}
